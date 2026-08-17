@@ -83,8 +83,10 @@
       <h3>Agregar / actualizar unidad ejecutora</h3>
       <div class="grid-form">
         <input type="text" id="ue-nombre" placeholder="Nombre del contacto">
-        <input type="text" id="ue-cargo" placeholder="Cargo (ej. Coordinador General)">
-        <input type="text" id="ue-entidad" placeholder="Unidad ejecutora / operación (ej. PE-L1310)">
+        <input type="text" id="ue-cargo" placeholder="Cargo (ej. Especialista en Adquisiciones)">
+        <select id="ue-entidad">
+          <option value="">Cargando proyectos...</option>
+        </select>
         <input type="text" id="ue-sector" placeholder="Sector (ej. Agua y Saneamiento)">
         <input type="email" id="ue-correo" placeholder="Correo">
         <input type="text" id="ue-telefono" placeholder="Teléfono (opcional)">
@@ -108,6 +110,24 @@
 
   cargarPendientes();
   cargarUnidadesEjecutoras();
+  cargarProyectosBid();
+
+  async function cargarProyectosBid() {
+    const select = document.getElementById("ue-entidad");
+    const snap = await getDocs(collection(db, "proyectos_bid"));
+    if (snap.empty) {
+      select.innerHTML = `<option value="">Sin proyectos cargados aún</option>`;
+      return;
+    }
+    const opciones = [];
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      opciones.push({ value: `${d.proyecto} — ${d.nombre}`, label: `${d.proyecto} — ${d.nombre}` });
+    });
+    opciones.sort((a, b) => a.value.localeCompare(b.value));
+    select.innerHTML = `<option value="">Selecciona un proyecto...</option>` +
+      opciones.map(o => `<option value="${o.value}">${o.label}</option>`).join("");
+  }
 
   // --- TABS ---
   document.querySelectorAll(".tab").forEach(tab => {
@@ -240,9 +260,10 @@
       fecha_actualizacion: serverTimestamp(),
     });
 
-    ["ue-nombre","ue-cargo","ue-entidad","ue-sector","ue-correo","ue-telefono"].forEach(id => {
+    ["ue-nombre","ue-cargo","ue-sector","ue-correo","ue-telefono"].forEach(id => {
       document.getElementById(id).value = "";
     });
+    document.getElementById("ue-entidad").selectedIndex = 0;
     cargarUnidadesEjecutoras();
   });
 </script>

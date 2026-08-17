@@ -19,6 +19,10 @@ service cloud.firestore {
     match /entidades/{docId} {
       allow read, write: if true;
     }
+
+    match /proyectos_bid/{docId} {
+      allow read, write: if true;
+    }
   }
 }
 
