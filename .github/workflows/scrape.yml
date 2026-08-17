@@ -2,8 +2,9 @@ name: Scraper semanal de autoridades
 
 on:
   schedule:
+    # Todos los lunes 8:00 UTC (3:00 am hora Perú)
     - cron: '0 8 * * 1'
-  workflow_dispatch: {}
+  workflow_dispatch: {} # permite correrlo manualmente desde GitHub también
 
 jobs:
   scrape:
@@ -27,17 +28,32 @@ jobs:
       - name: Scrapear directorio nacional (todas las entidades)
         run: node scrape-directorio-nacional.js 50
 
-      - name: Publicar ministros (automatico)
+      - name: Intentar directorio MEF (coordinadores UE-BID)
+        run: node scrape-mef-directorio.js
+        continue-on-error: true
+
+      - name: Publicar ministros (automático)
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: node upload-to-firestore.js ./output/ministros.json
 
-      - name: Publicar directorio nacional (automatico)
+      - name: Publicar directorio nacional (automático)
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: node upload-to-firestore.js ./output/directorio-nacional.json
 
-      - name: Guardar debug HTML si el scraper fallo en encontrar tarjetas
+      - name: Publicar coordinadores UE-BID si se encontraron (automático)
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -f ./output/coordinadores-ue-bid.json ]; then
+            node upload-to-firestore.js ./output/coordinadores-ue-bid.json
+          else
+            echo "No se generó coordinadores-ue-bid.json, se omite este paso."
+          fi
+        continue-on-error: true
+
+      - name: Guardar debug HTML si el scraper falló en encontrar tarjetas
         if: always()
         uses: actions/upload-artifact@v4
         with:
