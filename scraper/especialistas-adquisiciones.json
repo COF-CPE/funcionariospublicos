@@ -1,202 +1,284 @@
 [
   {
     "entidad": "PE-L1290 — Mejoramiento de los Servicios de la Oficina de Normalización Previsional",
+    "nombre": "Javier Gamarra",
+    "correo": "asegama_ue003@onp.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1290 — Mejoramiento de los Servicios de la Oficina de Normalización Previsional",
+    "nombre": "Silvia Chumbe",
+    "correo": "schumbe_ue003@onp.gob.pe",
+    "cargo": "Coordinador General"
+  },
+  {
+    "entidad": "PE-L1290 — Mejoramiento de los Servicios de la Oficina de Normalización Previsional",
     "nombre": "Jose Migue Rios Gutierrez",
-    "correo": "jrios_ue003@onp.gob.pe"
-  },
-  {
-    "entidad": "PE-L1239 — Mejoramiento de los Servicios de Recaudación Tributaria y Aduanera a través de la Transformación Digital",
-    "nombre": "Patricia Pilar Zavala Chacón",
-    "correo": "pzavalac@sunat.gob.pe"
-  },
-  {
-    "entidad": "PE-L1239 — Mejoramiento de los Servicios de Recaudación Tributaria y Aduanera a través de la Transformación Digital",
-    "nombre": "Nestor Leon",
-    "correo": "nleon1@sunat.gob.pe"
-  },
-  {
-    "entidad": "PE-L1281 — Proyecto de Transformación Digital con Equidad",
-    "nombre": "Lupe Riveros Aguero",
-    "correo": "lriveros@protde.gob.pe"
-  },
-  {
-    "entidad": "PE-L1266 — Proyecto de Mejoramiento de la Administración Financiera del Sector Público a través de la Transformación Digital.",
-    "nombre": "Carlos Apolo",
-    "correo": "consultor_ogip31@mef.gob.pe"
-  },
-  {
-    "entidad": "PE-L1231 — Proyecto para la Mejora de la Eficiencia en la Gestión de la Inversión y las Contrataciones Públicas",
-    "nombre": "Carlos Apolo",
-    "correo": "consultor_ogip31@mef.gob.pe"
-  },
-  {
-    "entidad": "PE-L1240 — Proyecto de Mejoramiento de los Servicios de Control Gubernamental para un Control Efectivo, Preventivo y Facilitador de la Gestión Pública",
-    "nombre": "Licenia Villacorta Rios",
-    "correo": "lvillacorta@contraloria.gob.pe"
+    "correo": "jrios_ue003@onp.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
   },
   {
     "entidad": "PE-L1286 — Proyecto de Transformación Digital del Banco de la Nación",
-    "nombre": "Rodrigo Bazalar Pizarro",
-    "correo": "rbazalar@bn.com.pe"
+    "nombre": "Rodrigo Bazalar Pizarro (coord adm)",
+    "correo": "rbazalar@bn.com.pe",
+    "cargo": "Especialista en Adquisiciones"
   },
   {
-    "entidad": "PE-L1279 — Programa de Infraestructura Vial para la Competitividad Regional (PROREGION 2)",
-    "nombre": "Luis Brena Maldonado",
-    "correo": "lbrena@proviasdes.gob.pe"
+    "entidad": "PE-L1286 — Proyecto de Transformación Digital del Banco de la Nación",
+    "nombre": "Eduardo Ibarra",
+    "correo": "eibarra@bn.com.pe",
+    "cargo": "Coordinador General"
+  },
+  {
+    "entidad": "PE-L1286 — Proyecto de Transformación Digital del Banco de la Nación",
+    "nombre": "Rolando Panduro",
+    "correo": "adquisiciones1uip@bn.com.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1266 — Proyecto de Mejoramiento de la Administración Financiera del Sector Público a través de la Transformación Digital.",
+    "nombre": "Carlos Apolo (coord)",
+    "correo": "consultor_ogip31@mef.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1266 — Proyecto de Mejoramiento de la Administración Financiera del Sector Público a través de la Transformación Digital.",
+    "nombre": "Jorge Sandoval",
+    "correo": "jsandovalr@mef.gob.pe",
+    "cargo": "Coordinador General"
+  },
+  {
+    "entidad": "PE-L1231-1",
+    "nombre": "Carlos Apolo (coord)",
+    "correo": "consultor_ogip31@mef.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1231-1",
+    "nombre": "Jorge Sandoval",
+    "correo": "jsandovalr@mef.gob.pe",
+    "cargo": "Coordinador General"
+  },
+  {
+    "entidad": "PE-L1250 — Mejoramiento del Servicio de Abastecimiento Público de Bienes, Servicios y Obras",
+    "nombre": "Carlos Apolo (coord)",
+    "correo": "consultor_ogip31@mef.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1250 — Mejoramiento del Servicio de Abastecimiento Público de Bienes, Servicios y Obras",
+    "nombre": "Jorge Sandoval",
+    "correo": "jsandovalr@mef.gob.pe",
+    "cargo": "Coordinador General"
+  },
+  {
+    "entidad": "PE-L1231-2",
+    "nombre": "Vicente Vasquez",
+    "correo": null,
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1231-2",
+    "nombre": "Gladys Bautista",
+    "correo": "gbautista.pbid@oece.gob.pe",
+    "cargo": "Coordinador General"
   },
   {
     "entidad": "PE-L1250 — Mejoramiento del Servicio de Abastecimiento Público de Bienes, Servicios y Obras",
     "nombre": "Johanna Suarez",
-    "correo": "consultor_ogip10@mef.gob.pe"
-  },
-  {
-    "entidad": "PE-L1263 — Programa de Innovación, Modernización Tecnológica y Emprendimiento",
-    "nombre": "Eduardo Santillana",
-    "correo": "esantillana@proinnovate.gob.pe"
-  },
-  {
-    "entidad": "PE-L1224 — MEJORAMIENTO DE LOS SERVICIOS DE PREVENCIÓN DEL DELITO EN LA POBLACIÓN MÁS VULNERABLE AL CRIMEN Y LA VIOLENCIA EN EL PERÚ",
-    "nombre": "Arturo Velasquez",
-    "correo": "jvelasquez@peruseguro.gob.pe"
-  },
-  {
-    "entidad": "PE-L1224 — MEJORAMIENTO DE LOS SERVICIOS DE PREVENCIÓN DEL DELITO EN LA POBLACIÓN MÁS VULNERABLE AL CRIMEN Y LA VIOLENCIA EN EL PERÚ",
-    "nombre": "JOHNNY LUIS CAHUANCAMA CONDO",
-    "correo": "jcahuancama@peruseguro.gob.pe"
-  },
-  {
-    "entidad": "PE-L1224 — MEJORAMIENTO DE LOS SERVICIOS DE PREVENCIÓN DEL DELITO EN LA POBLACIÓN MÁS VULNERABLE AL CRIMEN Y LA VIOLENCIA EN EL PERÚ",
-    "nombre": "Gerardo Darick Merino Huertas",
-    "correo": "gmerino@peruseguro.gob.pe"
-  },
-  {
-    "entidad": "PE-L1224 — MEJORAMIENTO DE LOS SERVICIOS DE PREVENCIÓN DEL DELITO EN LA POBLACIÓN MÁS VULNERABLE AL CRIMEN Y LA VIOLENCIA EN EL PERÚ",
-    "nombre": "Milagros Aidee Martel Rodriguez",
-    "correo": "mmartel@peruseguro.gob.pe"
-  },
-  {
-    "entidad": "PE-L1224 — MEJORAMIENTO DE LOS SERVICIOS DE PREVENCIÓN DEL DELITO EN LA POBLACIÓN MÁS VULNERABLE AL CRIMEN Y LA VIOLENCIA EN EL PERÚ",
-    "nombre": "Juanita Mirella Crisostomo More",
-    "correo": "jcrisostomo@peruseguro.gob.pe"
-  },
-  {
-    "entidad": "PE-L1230-1 (MP)",
-    "nombre": "Jhanfranco Ucañay",
-    "correo": "jwucanay@mpfn.gob.pe"
-  },
-  {
-    "entidad": "PE-L1230-1 (MP)",
-    "nombre": "Bedoya Benites",
-    "correo": "gsbedoya@mpfn.gob.pe"
-  },
-  {
-    "entidad": "PE-L1230-1 (MP)",
-    "nombre": "Arámbulo Margarito",
-    "correo": "pmarambulo@mpfn.gob.pe"
-  },
-  {
-    "entidad": "PE-L1230-1 (MP)",
-    "nombre": "Astupuma Massironi",
-    "correo": "dastupuma@mpfn.gob.pe"
-  },
-  {
-    "entidad": "PE-L1230-1 (MP)",
-    "nombre": "Quispe Gavilán",
-    "correo": "rcquispe@mpfn.gob.pe"
-  },
-  {
-    "entidad": "PE-L1230-1 (MP)",
-    "nombre": "Aguayo Belli",
-    "correo": "laguayo@mpfn.gob.pe"
-  },
-  {
-    "entidad": "PE-L1230-1 (MP)",
-    "nombre": "Alban Ruiz",
-    "correo": "jlalban@mpfn.gob.pe"
-  },
-  {
-    "entidad": "PE-L1230-2 (PJ)",
-    "nombre": "Isabel Loja",
-    "correo": "iloja.pmsjpenal@gmail.com"
+    "correo": "consultor_ogip10@mef.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
   },
   {
     "entidad": "PE-L1259 — Proyecto de Mejoramiento y Ampliación del Servicio de Drenaje Pluvial de la Ciudad de Puerto Maldonado y el Centro Poblado El Triunfo en el Departamento de Madre de Dios",
     "nombre": "Rut hilario Zamora",
-    "correo": "pnsu_ugppbid_rlhz@viviendaext.pe"
+    "correo": "pnsu_ugppbid_rlhz@viviendaext.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1259 — Proyecto de Mejoramiento y Ampliación del Servicio de Drenaje Pluvial de la Ciudad de Puerto Maldonado y el Centro Poblado El Triunfo en el Departamento de Madre de Dios",
+    "nombre": "Maria del Carmen",
+    "correo": null,
+    "cargo": "Coordinador General"
   },
   {
     "entidad": "PE-L1238 — Programa Integral de Drenaje Pluvial en ciudades priorizadas del Perú",
     "nombre": "Rut hilario Zamora",
-    "correo": "pnsu_ugppbid_rlhz@viviendaext.pe"
+    "correo": "pnsu_ugppbid_rlhz@viviendaext.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1238 — Programa Integral de Drenaje Pluvial en ciudades priorizadas del Perú",
+    "nombre": "Maria del Carmen",
+    "correo": null,
+    "cargo": "Coordinador General"
   },
   {
     "entidad": "PE-L1256 — Proyecto de Inversión Mejoramiento y Ampliación del Servicio de Agua Potable, Alcantarillado Sanitario y Tratamiento de Aguas Residuales en los Distritos de Zarumilla y Aguas Verdes de la Provincia de Zarumilla – Departamento de Tumbes",
     "nombre": "Rut hilario Zamora",
-    "correo": "pnsu_ugppbid_rlhz@viviendaext.pe"
+    "correo": "pnsu_ugppbid_rlhz@viviendaext.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1256 — Proyecto de Inversión Mejoramiento y Ampliación del Servicio de Agua Potable, Alcantarillado Sanitario y Tratamiento de Aguas Residuales en los Distritos de Zarumilla y Aguas Verdes de la Provincia de Zarumilla – Departamento de Tumbes",
+    "nombre": "Maria del Carmen",
+    "correo": null,
+    "cargo": "Coordinador General"
   },
   {
     "entidad": "DRENAJE",
     "nombre": "Lady Diana Moreno Rojas",
-    "correo": "pnsu_ugppbid_ldmr@viviendaext.pe"
-  },
-  {
-    "entidad": "DRENAJE",
-    "nombre": "Tomás Máximo Úrsula Vela",
-    "correo": "pnsu_ugppbid_tmuv@viviendaext.pe"
+    "correo": "pnsu_ugppbid_ldmr@viviendaext.pe",
+    "cargo": "Especialista en Adquisiciones"
   },
   {
     "entidad": "DRENAJE",
     "nombre": "Jenny Ochante Cahuana",
-    "correo": "pnsu_ugppbid_joc@viviendaext.pe"
+    "correo": "pnsu_ugppbid_joc@viviendaext.pe",
+    "cargo": "Especialista en Adquisiciones"
   },
   {
     "entidad": "PE-L1269 — Programa Integral de Agua y Saneamiento Rural, segunda fase - PIASAR II",
     "nombre": "Giselly Quiroz",
-    "correo": "gquirozy@vivienda.gob.pe"
+    "correo": "gquirozy@vivienda.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1269 — Programa Integral de Agua y Saneamiento Rural, segunda fase - PIASAR II",
+    "nombre": "Loida Villanueva",
+    "correo": "lvillanueva@vivienda.gob.pe",
+    "cargo": "Coordinador General"
   },
   {
     "entidad": "PE-L1285 — Proyecto para la Ampliación y Mejoramiento de los Servicios de Agua Potable y Alcantarillado de la Ciudad de Juliaca - Puno",
     "nombre": "Luis Jara",
-    "correo": "pnsu_ucpj_lfjp@viviendaext.pe"
+    "correo": "pnsu_ucpj_lfjp@viviendaext.pe",
+    "cargo": "Especialista en Adquisiciones"
   },
   {
-    "entidad": "PE-L1232 — Proyectos de Inversión Forestal Perú",
-    "nombre": "Ruben Codova de Pierola",
-    "correo": "especialistaadquisiciones2@bosques.gob.pe"
+    "entidad": "PE-L1285 — Proyecto para la Ampliación y Mejoramiento de los Servicios de Agua Potable y Alcantarillado de la Ciudad de Juliaca - Puno",
+    "nombre": "Luis Aragon (coord tecnico)",
+    "correo": "pnsu_ucpj_lag@vivienda.gob.pe",
+    "cargo": "Coordinador General"
   },
   {
-    "entidad": "PE-L1232 — Proyectos de Inversión Forestal Perú",
-    "nombre": "Luis Miguel Collantes Reyes",
-    "correo": "lmcollantes@mpfn.gob.pe"
+    "entidad": "PE-L1239 — Mejoramiento de los Servicios de Recaudación Tributaria y Aduanera a través de la Transformación Digital",
+    "nombre": "Patricia Pilar Zavala Chacón",
+    "correo": "pzavalac@sunat.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
   },
   {
-    "entidad": "PE-L1232 — Proyectos de Inversión Forestal Perú",
-    "nombre": "Manuel Rijalba",
-    "correo": "adquisiciones1bid@bosques.gob.pe"
+    "entidad": "PE-L1239 — Mejoramiento de los Servicios de Recaudación Tributaria y Aduanera a través de la Transformación Digital",
+    "nombre": "Luis Enrique Narro Forno",
+    "correo": null,
+    "cargo": "Coordinador General"
+  },
+  {
+    "entidad": "PE-L1239 — Mejoramiento de los Servicios de Recaudación Tributaria y Aduanera a través de la Transformación Digital",
+    "nombre": "Juan Carlos Ortiz Bisso",
+    "correo": "jortiz@sunat.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "SUBNACIONAL",
+    "nombre": "Carlos Apolo (coord)",
+    "correo": "consultor_ogip31@mef.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "SUBNACIONAL",
+    "nombre": "Antonio Vega (coord. Tecnico)",
+    "correo": "consultor_uctp01@mef.gob.pe",
+    "cargo": "Coordinador General"
   },
   {
     "entidad": "PE-L1270 — Proyecto de Mejoramiento de la Red de Servicios de Innovación, Tranferencia Tecnológica y Extensión Tecnológica Agraria en las Seis Estaciones Experimentales Agrarias del INIA",
     "nombre": "Carmen Grillo Oshiro",
-    "correo": "cgrillo@pred.inia.gob.pe"
+    "correo": "cgrillo@pred.inia.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1270 — Proyecto de Mejoramiento de la Red de Servicios de Innovación, Tranferencia Tecnológica y Extensión Tecnológica Agraria en las Seis Estaciones Experimentales Agrarias del INIA",
+    "nombre": "Christian Alfredo Barrantes Brav",
+    "correo": "cbarrantes@pred.inia.gob.pe",
+    "cargo": "Coordinador General"
   },
   {
     "entidad": "PE-L1280 — Mejoramiento del Servicio de Inocuidad Agroalimentaria del SENASA",
     "nombre": "Isabel Ramirez Portillo",
-    "correo": "L01PRD0035@senasa.gob.pe"
+    "correo": "L01PRD0035@senasa.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1280 — Mejoramiento del Servicio de Inocuidad Agroalimentaria del SENASA",
+    "nombre": "César Raúl Medianero Tantachuco",
+    "correo": "L01PRD0001@senasa.gob.pe",
+    "cargo": "Coordinador General"
+  },
+  {
+    "entidad": "PE-L1279 — Programa de Infraestructura Vial para la Competitividad Regional (PROREGION 2)",
+    "nombre": "Luis Brena Maldonado",
+    "correo": "lbrena@proviasdes.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1279 — Programa de Infraestructura Vial para la Competitividad Regional (PROREGION 2)",
+    "nombre": "Claudia Paredes Vasques",
+    "correo": "cparedes@proviasdes.gob.pe",
+    "cargo": "Coordinador General"
+  },
+  {
+    "entidad": "PE-L1240 — Proyecto de Mejoramiento de los Servicios de Control Gubernamental para un Control Efectivo, Preventivo y Facilitador de la Gestión Pública",
+    "nombre": "Licenia Villacorta Rios",
+    "correo": "lvillacorta@contraloria.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1240 — Proyecto de Mejoramiento de los Servicios de Control Gubernamental para un Control Efectivo, Preventivo y Facilitador de la Gestión Pública",
+    "nombre": "Paul Werner Caiguaray Perez",
+    "correo": "pcaiguaray@contraloria.gob.pe",
+    "cargo": "Coordinador General"
   },
   {
     "entidad": "PE-L1268 — Programa de Inversión: Mejora de la calidad de los servicios de Educación Superior y Técnico-Productiva a nivel nacional",
-    "nombre": "Julio Guevara",
-    "correo": "jguevara@ue118.gob.pe"
+    "nombre": "Julio Alberto Guevara Davila",
+    "correo": "jguevara@ue118.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
   },
   {
     "entidad": "PE-L1268 — Programa de Inversión: Mejora de la calidad de los servicios de Educación Superior y Técnico-Productiva a nivel nacional",
-    "nombre": "Vladimir Cabrejos",
-    "correo": "pcabrejos@ue118.gob.pe"
+    "nombre": "German Abelardo Lopez Herencia",
+    "correo": "glopez@ue118.gob.pe",
+    "cargo": "Coordinador General"
   },
   {
-    "entidad": "PE-L1231 — Proyecto para la Mejora de la Eficiencia en la Gestión de la Inversión y las Contrataciones Públicas",
-    "nombre": "Vicente  Vasquez",
-    "correo": "vvasquez.pbid@oece.gob.pe"
+    "entidad": "PE-L1224 — MEJORAMIENTO DE LOS SERVICIOS DE PREVENCIÓN DEL DELITO EN LA POBLACIÓN MÁS VULNERABLE AL CRIMEN Y LA VIOLENCIA EN EL PERÚ",
+    "nombre": "Arturo Velasquez",
+    "correo": "jvelasquez@peruseguro.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1230-1",
+    "nombre": "Jhanfranco Ucañay",
+    "correo": "jwucanay@mpfn.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1230-2",
+    "nombre": "Isabel Loja",
+    "correo": "iloja.pmsjpenal@gmail.com",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1263 — Programa de Innovación, Modernización Tecnológica y Emprendimiento",
+    "nombre": "Victor Cravero Morocho",
+    "correo": "vcravero@proinnovate.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
+  },
+  {
+    "entidad": "PE-L1232 — Proyectos de Inversión Forestal Perú",
+    "nombre": "Ruben Codova de Pierola",
+    "correo": "especialistaadquisiciones2@bosques.gob.pe",
+    "cargo": "Especialista en Adquisiciones"
   }
 ]

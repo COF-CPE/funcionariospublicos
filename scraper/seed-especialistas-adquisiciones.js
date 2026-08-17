@@ -40,10 +40,23 @@ async function main() {
   );
 
   const ref = db.collection('autoridades');
+
+  // Borra lo sembrado en una corrida anterior de este mismo script, para
+  // que gente que ya no está en el archivo no quede como "fantasma".
+  // Nunca toca registros de otras fuentes (scraper, carga_manual desde
+  // el panel/modal, etc.) — solo los que trae fuente: "carga_manual_equipo".
+  const anteriores = await ref.where('fuente', '==', 'carga_manual_equipo').get();
+  let borrados = 0;
+  for (const docSnap of anteriores.docs) {
+    await docSnap.ref.delete();
+    borrados++;
+  }
+  console.log(`Borrados ${borrados} registros de una siembra anterior.`);
+
   let creados = 0;
 
   for (const r of registros) {
-    const cargo = 'Especialista en Adquisiciones';
+    const cargo = r.cargo || 'Especialista en Adquisiciones';
     const id = normalizarId(`${cargo}-${r.entidad}-${r.nombre}`);
     await ref.doc(id).set({
       nombre: r.nombre,
@@ -60,7 +73,7 @@ async function main() {
     creados++;
   }
 
-  console.log(`Listo: ${creados} especialistas en adquisiciones sembrados.`);
+  console.log(`Listo: ${creados} personas sembradas (Especialistas en Adquisiciones y Coordinadores).`);
 }
 
 main().catch((err) => {
