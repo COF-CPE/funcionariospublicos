@@ -1,0 +1,30 @@
+name: Sembrar proyectos BID (una vez)
+
+on:
+  workflow_dispatch: {} # solo manual, no corre en cron
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scraper
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias (sin navegador, no hace falta aquí)
+        run: npm install firebase-admin --no-save
+
+      - name: Sembrar proyectos_bid en Firestore
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node seed-proyectos-bid.js
+
+      - name: Sembrar especialistas en adquisiciones en Firestore
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node seed-especialistas-adquisiciones.js
