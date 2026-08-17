@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directorio de Autoridades — Perú</title>
+<style>
+  :root{
+    --rojo: #C8102E;
+    --rojo-oscuro: #8f0b20;
+    --tinta: #1c1c1e;
+    --gris: #6b6b70;
+    --gris-claro: #e8e7e4;
+    --fondo: #faf9f7;
+    --panel: #ffffff;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    background:var(--fondo);
+    color:var(--tinta);
+  }
+  header{
+    background:var(--tinta);
+    color:#fff;
+    padding:28px 32px 24px;
+    border-bottom:4px solid var(--rojo);
+  }
+  header .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#f0a0ab;
+    margin-bottom:6px;
+  }
+  header h1{
+    margin:0 0 4px;
+    font-size:26px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  header p{
+    margin:0;
+    color:#c7c7cc;
+    font-size:14px;
+  }
+  .toolbar{
+    max-width:1080px;
+    margin:0 auto;
+    padding:20px 32px 0;
+  }
+  .search-row{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  input[type="text"]{
+    flex:1;
+    min-width:220px;
+    padding:11px 14px;
+    border:1.5px solid var(--gris-claro);
+    border-radius:8px;
+    font-size:14px;
+    font-family:var(--sans);
+    background:var(--panel);
+  }
+  input[type="text"]:focus{
+    outline:2px solid var(--rojo);
+    outline-offset:1px;
+    border-color:var(--rojo);
+  }
+  .chip-group{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+  .chip{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.02em;
+    padding:7px 13px;
+    border-radius:20px;
+    border:1.5px solid var(--gris-claro);
+    background:var(--panel);
+    color:var(--gris);
+    cursor:pointer;
+    transition:all .15s ease;
+    user-select:none;
+  }
+  .chip:hover{ border-color:var(--rojo); color:var(--rojo-oscuro); }
+  .chip.active{
+    background:var(--tinta);
+    border-color:var(--tinta);
+    color:#fff;
+  }
+  .count{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 32px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--gris);
+    margin-bottom:10px;
+  }
+  .grid{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 32px 60px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    gap:14px;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--gris-claro);
+    border-radius:10px;
+    padding:16px 18px;
+    position:relative;
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .card:hover{
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    transform:translateY(-1px);
+  }
+  .card .tipo-tag{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:3px 8px;
+    border-radius:4px;
+    margin-bottom:9px;
+  }
+  .tipo-ministerio{ background:#fde8ea; color:var(--rojo-oscuro); }
+  .tipo-agencia{ background:#e7edf5; color:#2c4a7a; }
+  .tipo-regulador{ background:#eaf3ea; color:#2e6b3e; }
+  .tipo-ue_bid{ background:#fff3dc; color:#8a5a00; }
+  .card h3{
+    margin:0 0 3px;
+    font-size:15px;
+    font-weight:700;
+    line-height:1.3;
+  }
+  .card .cargo{
+    font-size:13px;
+    color:var(--gris);
+    margin-bottom:10px;
+    line-height:1.35;
+  }
+  .card .entidad{
+    font-size:12px;
+    font-weight:600;
+    color:var(--tinta);
+    margin-bottom:8px;
+  }
+  .card .contacto{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--gris);
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    border-top:1px dashed var(--gris-claro);
+    padding-top:9px;
+    margin-top:9px;
+  }
+  .contacto a{ color:var(--rojo-oscuro); text-decoration:none; }
+  .contacto a:hover{ text-decoration:underline; }
+  .falta-correo{
+    color:#b5860a;
+  }
+  .empty-state{
+    max-width:1080px;
+    margin:40px auto;
+    padding:0 32px;
+    text-align:center;
+    color:var(--gris);
+    font-size:14px;
+  }
+  footer{
+    text-align:center;
+    padding:20px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--gris);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">BID · Oficina Perú</div>
+  <h1>Directorio de Autoridades</h1>
+  <p>Ministros, Directores Generales, agencias reguladoras y unidades ejecutoras de proyectos BID</p>
+</header>
+
+<div class="toolbar">
+  <div class="search-row">
+    <input type="text" id="buscador" placeholder="Buscar por nombre, cargo o entidad...">
+  </div>
+  <div class="chip-group" id="filtro-tipo">
+    <div class="chip active" data-tipo="todos">Todos</div>
+    <div class="chip" data-tipo="ministerio">Ministerios</div>
+    <div class="chip" data-tipo="agencia">Agencias</div>
+    <div class="chip" data-tipo="regulador">Reguladores</div>
+    <div class="chip" data-tipo="ue_bid">Unidades Ejecutoras BID</div>
+  </div>
+</div>
+
+<div class="count" id="contador"></div>
+<div class="grid" id="grid"></div>
+<div class="empty-state" id="vacio" style="display:none;">No se encontraron resultados con ese filtro o búsqueda.</div>
+
+<footer>Datos de ejemplo — pendiente de conectar a Firestore</footer>
+
+<script>
+// --- DATOS DE EJEMPLO ---
+// En producción esto se reemplaza por una lectura de Firestore:
+//   collection(db, "autoridades").where("estado","==","publicado")
+const autoridades = [
+  { nombre: "Eduardo Cuba", cargo: "Ministro de Economía y Finanzas", entidad: "Ministerio de Economía y Finanzas", tipo: "ministerio", sector: "Economía", correo: "ecuba@mef.gob.pe", telefono: "(01) 311-5930" },
+  { nombre: "Luis Enrique Chávez Basagoitia", cargo: "Viceministro de Relaciones Exteriores", entidad: "Ministerio de Relaciones Exteriores", tipo: "ministerio", sector: "Relaciones Exteriores", correo: null, telefono: null },
+  { nombre: "Julio Demartini", cargo: "Ministro de Salud", entidad: "Ministerio de Salud", tipo: "ministerio", sector: "Salud", correo: "ldyer@minsa.gob.pe", telefono: "(01) 315-6600" },
+  { nombre: "Jefe SUNAT", cargo: "Superintendente Nacional", entidad: "SUNAT", tipo: "regulador", sector: "Economía", correo: null, telefono: null },
+  { nombre: "Autoridad OSCE", cargo: "Presidente Ejecutivo", entidad: "OSCE", tipo: "regulador", sector: "Contrataciones Públicas", correo: null, telefono: null },
+  { nombre: "Jefatura ANA", cargo: "Jefe(a) de la Autoridad Nacional del Agua", entidad: "ANA", tipo: "regulador", sector: "Agua y Saneamiento", correo: null, telefono: null },
+  { nombre: "Coordinador(a) UE", cargo: "Coordinador General de Unidad Ejecutora", entidad: "PE-L1310 — Programa de Reforma Agua y Saneamiento", tipo: "ue_bid", sector: "Agua y Saneamiento", correo: "contacto.pel1310@vivienda.gob.pe", telefono: null },
+  { nombre: "Especialista Fiduciario", cargo: "Especialista en Adquisiciones", entidad: "Unidad Ejecutora — Infraestructura Vial", tipo: "ue_bid", sector: "Transporte", correo: null, telefono: null },
+];
+
+let filtroActivo = "todos";
+let textoBusqueda = "";
+
+function iconoTipo(tipo){
+  const nombres = { ministerio:"Ministerio", agencia:"Agencia", regulador:"Regulador", ue_bid:"Unidad Ejecutora BID" };
+  return nombres[tipo] || tipo;
+}
+
+function render(){
+  const grid = document.getElementById("grid");
+  const vacio = document.getElementById("vacio");
+  const contador = document.getElementById("contador");
+
+  const filtrados = autoridades.filter(a => {
+    const pasaTipo = filtroActivo === "todos" || a.tipo === filtroActivo;
+    const texto = (a.nombre + " " + a.cargo + " " + a.entidad).toLowerCase();
+    const pasaBusqueda = texto.includes(textoBusqueda.toLowerCase());
+    return pasaTipo && pasaBusqueda;
+  });
+
+  contador.textContent = `${filtrados.length} de ${autoridades.length} registros`;
+
+  grid.innerHTML = "";
+  vacio.style.display = filtrados.length === 0 ? "block" : "none";
+
+  filtrados.forEach(a => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <span class="tipo-tag tipo-${a.tipo}">${iconoTipo(a.tipo)}</span>
+      <h3>${a.nombre}</h3>
+      <div class="cargo">${a.cargo}</div>
+      <div class="entidad">${a.entidad}</div>
+      <div class="contacto">
+        ${a.correo ? `<span><a href="mailto:${a.correo}">${a.correo}</a></span>` : `<span class="falta-correo">Correo no disponible</span>`}
+        ${a.telefono ? `<span>${a.telefono}</span>` : ""}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    filtroActivo = chip.dataset.tipo;
+    render();
+  });
+});
+
+document.getElementById("buscador").addEventListener("input", (e) => {
+  textoBusqueda = e.target.value;
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Revisión — Directorio de Autoridades</title>
+<style>
+  :root{
+    --rojo:#C8102E; --rojo-oscuro:#8f0b20; --tinta:#1c1c1e;
+    --gris:#6b6b70; --gris-claro:#e8e7e4; --fondo:#faf9f7; --panel:#ffffff;
+    --verde:#2e6b3e; --verde-bg:#eaf3ea; --amarillo:#8a5a00; --amarillo-bg:#fff3dc;
+    --mono:'IBM Plex Mono', Consolas, monospace; --sans:'Inter', -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:var(--sans); background:var(--fondo); color:var(--tinta);}
+  header{background:var(--tinta); color:#fff; padding:22px 32px; border-bottom:4px solid var(--rojo); display:flex; justify-content:space-between; align-items:center;}
+  header h1{margin:0; font-size:20px;}
+  header .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#f0a0ab;}
+  #btn-logout{background:transparent; border:1px solid #555; color:#ccc; padding:7px 14px; border-radius:6px; font-family:var(--mono); font-size:12px; cursor:pointer;}
+  #btn-logout:hover{border-color:#fff; color:#fff;}
+
+  #login-screen{max-width:360px; margin:80px auto; background:var(--panel); border:1px solid var(--gris-claro); border-radius:10px; padding:28px;}
+  #login-screen h2{margin-top:0; font-size:16px;}
+  #login-screen input{width:100%; padding:10px 12px; margin-bottom:10px; border:1.5px solid var(--gris-claro); border-radius:7px; font-size:14px;}
+  #login-screen button{width:100%; padding:11px; background:var(--tinta); color:#fff; border:none; border-radius:7px; font-weight:600; cursor:pointer;}
+  #login-error{color:var(--rojo); font-size:13px; margin-top:8px; display:none;}
+
+  main{max-width:960px; margin:0 auto; padding:28px 32px 60px; display:none;}
+  .tabs{display:flex; gap:6px; margin-bottom:20px; border-bottom:1.5px solid var(--gris-claro);}
+  .tab{font-family:var(--mono); font-size:13px; padding:10px 16px; cursor:pointer; color:var(--gris); border-bottom:2px solid transparent;}
+  .tab.active{color:var(--tinta); border-color:var(--rojo); font-weight:600;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .cambio-card{background:var(--panel); border:1px solid var(--gris-claro); border-radius:10px; padding:16px 18px; margin-bottom:14px;}
+  .cambio-card .tipo-badge{font-family:var(--mono); font-size:10px; text-transform:uppercase; padding:3px 8px; border-radius:4px; background:var(--amarillo-bg); color:var(--amarillo); margin-bottom:10px; display:inline-block;}
+  .comparacion{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:10px 0;}
+  .comparacion .col h4{margin:0 0 6px; font-size:11px; font-family:var(--mono); text-transform:uppercase; color:var(--gris);}
+  .comparacion .col{background:var(--fondo); border-radius:7px; padding:10px 12px; font-size:13px; line-height:1.5;}
+  .comparacion .col.actual{border-left:3px solid var(--gris-claro);}
+  .comparacion .col.propuesto{border-left:3px solid var(--rojo);}
+  .campo-cambiado{color:var(--rojo-oscuro); font-weight:600;}
+  .acciones{display:flex; gap:10px; margin-top:12px;}
+  .btn-aprobar{background:var(--verde-bg); color:var(--verde); border:1px solid var(--verde); padding:8px 16px; border-radius:6px; font-weight:600; font-size:13px; cursor:pointer;}
+  .btn-rechazar{background:#fbe9e9; color:var(--rojo-oscuro); border:1px solid var(--rojo-oscuro); padding:8px 16px; border-radius:6px; font-weight:600; font-size:13px; cursor:pointer;}
+  .btn-aprobar:hover{opacity:.8;} .btn-rechazar:hover{opacity:.8;}
+
+  #form-ue{background:var(--panel); border:1px solid var(--gris-claro); border-radius:10px; padding:20px; margin-bottom:24px;}
+  #form-ue h3{margin-top:0; font-size:15px;}
+  #form-ue .grid-form{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  #form-ue input{padding:9px 11px; border:1.5px solid var(--gris-claro); border-radius:6px; font-size:13px;}
+  #form-ue button{margin-top:12px; background:var(--tinta); color:#fff; border:none; padding:10px 18px; border-radius:6px; font-weight:600; cursor:pointer;}
+
+  .lista-ue{display:flex; flex-direction:column; gap:8px;}
+  .ue-item{background:var(--panel); border:1px solid var(--gris-claro); border-radius:8px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; font-size:13px;}
+  .ue-item .btn-eliminar{background:none; border:none; color:var(--gris); cursor:pointer; font-size:12px;}
+  .ue-item .btn-eliminar:hover{color:var(--rojo);}
+
+  .vacio-msg{color:var(--gris); font-size:13px; padding:20px 0;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">BID · Oficina Perú</div>
+    <h1>Panel de Revisión — Directorio de Autoridades</h1>
+  </div>
+  <button id="btn-logout" style="display:none;">Cerrar sesión</button>
+</header>
+
+<div id="login-screen">
+  <h2>Acceso restringido</h2>
+  <input type="email" id="login-email" placeholder="Correo">
+  <input type="password" id="login-pass" placeholder="Contraseña">
+  <button id="btn-login">Ingresar</button>
+  <div id="login-error">Correo o contraseña incorrectos.</div>
+</div>
+
+<main id="main">
+  <div class="tabs">
+    <div class="tab active" data-panel="pendientes">Cambios pendientes</div>
+    <div class="tab" data-panel="ue">Unidades Ejecutoras BID</div>
+  </div>
+
+  <div class="panel active" id="panel-pendientes">
+    <div id="lista-pendientes"><div class="vacio-msg">Cargando cambios pendientes...</div></div>
+  </div>
+
+  <div class="panel" id="panel-ue">
+    <div id="form-ue">
+      <h3>Agregar / actualizar unidad ejecutora</h3>
+      <div class="grid-form">
+        <input type="text" id="ue-nombre" placeholder="Nombre del contacto">
+        <input type="text" id="ue-cargo" placeholder="Cargo (ej. Coordinador General)">
+        <input type="text" id="ue-entidad" placeholder="Unidad ejecutora / operación (ej. PE-L1310)">
+        <input type="text" id="ue-sector" placeholder="Sector (ej. Agua y Saneamiento)">
+        <input type="email" id="ue-correo" placeholder="Correo">
+        <input type="text" id="ue-telefono" placeholder="Teléfono (opcional)">
+      </div>
+      <button id="btn-guardar-ue">Guardar en el directorio</button>
+    </div>
+    <div class="lista-ue" id="lista-ue"><div class="vacio-msg">Cargando unidades ejecutoras...</div></div>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import {
+    getFirestore, collection, query, where, getDocs, doc, setDoc,
+    updateDoc, deleteDoc, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+  import { firebaseConfig } from "./firebase-config.js";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // --- LOGIN ---
+  document.getElementById("btn-login").addEventListener("click", async () => {
+    const email = document.getElementById("login-email").value;
+    const pass = document.getElementById("login-pass").value;
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (e) {
+      document.getElementById("login-error").style.display = "block";
+    }
+  });
+
+  document.getElementById("btn-logout").addEventListener("click", () => signOut(auth));
+
+  onAuthStateChanged(auth, (user) => {
+    document.getElementById("login-screen").style.display = user ? "none" : "block";
+    document.getElementById("main").style.display = user ? "block" : "none";
+    document.getElementById("btn-logout").style.display = user ? "block" : "none";
+    if (user) {
+      cargarPendientes();
+      cargarUnidadesEjecutoras();
+    }
+  });
+
+  // --- TABS ---
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById("panel-" + tab.dataset.panel).classList.add("active");
+    });
+  });
+
+  // --- CAMBIOS PENDIENTES (del scraper) ---
+  function idNormalizado(str) {
+    return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 200);
+  }
+
+  function campoDestacado(actual, propuesto, campo) {
+    const cambio = !actual || actual[campo] !== propuesto[campo];
+    const valor = propuesto[campo] ?? "—";
+    return cambio ? `<span class="campo-cambiado">${valor}</span>` : valor;
+  }
+
+  async function cargarPendientes() {
+    const cont = document.getElementById("lista-pendientes");
+    const q = query(collection(db, "cambios_pendientes"), where("estado", "==", "pendiente_revision"));
+    const snap = await getDocs(q);
+
+    if (snap.empty) {
+      cont.innerHTML = `<div class="vacio-msg">No hay cambios pendientes de revisión. El scraper corre semanalmente — vuelve a revisar después de la próxima ejecución.</div>`;
+      return;
+    }
+
+    cont.innerHTML = "";
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      const { propuesto, actual, tipo } = data;
+      const card = document.createElement("div");
+      card.className = "cambio-card";
+      card.innerHTML = `
+        <span class="tipo-badge">${tipo === "nuevo" ? "Nuevo registro" : "Actualización detectada"}</span>
+        <div class="comparacion">
+          <div class="col actual">
+            <h4>Actual (publicado)</h4>
+            ${actual ? `${actual.nombre}<br>${actual.cargo || "—"}<br>${actual.correo || "sin correo"}` : "No existía antes"}
+          </div>
+          <div class="col propuesto">
+            <h4>Propuesto (scraper)</h4>
+            ${campoDestacado(actual, propuesto, "nombre")}<br>
+            ${campoDestacado(actual, propuesto, "cargo")}<br>
+            ${campoDestacado(actual, propuesto, "correo")}
+            ${propuesto.correo_faltante ? '<br><span style="color:var(--amarillo)">⚠ sin correo detectado</span>' : ""}
+          </div>
+        </div>
+        <div class="acciones">
+          <button class="btn-aprobar">Aprobar y publicar</button>
+          <button class="btn-rechazar">Rechazar</button>
+        </div>
+      `;
+
+      card.querySelector(".btn-aprobar").addEventListener("click", async () => {
+        const id = idNormalizado(`${propuesto.cargo}-${propuesto.entidad_url || ""}`);
+        await setDoc(doc(db, "autoridades", id), {
+          ...propuesto,
+          estado: "publicado",
+          fecha_actualizacion: serverTimestamp(),
+        });
+        await updateDoc(docSnap.ref, { estado: "aprobado" });
+        card.remove();
+      });
+
+      card.querySelector(".btn-rechazar").addEventListener("click", async () => {
+        await updateDoc(docSnap.ref, { estado: "rechazado" });
+        card.remove();
+      });
+
+      cont.appendChild(card);
+    });
+  }
+
+  // --- UNIDADES EJECUTORAS BID (carga manual) ---
+  async function cargarUnidadesEjecutoras() {
+    const cont = document.getElementById("lista-ue");
+    const q = query(collection(db, "autoridades"), where("tipo", "==", "ue_bid"));
+    const snap = await getDocs(q);
+
+    if (snap.empty) {
+      cont.innerHTML = `<div class="vacio-msg">Aún no hay unidades ejecutoras registradas.</div>`;
+      return;
+    }
+
+    cont.innerHTML = "";
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      const item = document.createElement("div");
+      item.className = "ue-item";
+      item.innerHTML = `
+        <span><strong>${d.nombre}</strong> — ${d.cargo} · ${d.entidad}</span>
+        <button class="btn-eliminar">Eliminar</button>
+      `;
+      item.querySelector(".btn-eliminar").addEventListener("click", async () => {
+        await deleteDoc(docSnap.ref);
+        item.remove();
+      });
+      cont.appendChild(item);
+    });
+  }
+
+  document.getElementById("btn-guardar-ue").addEventListener("click", async () => {
+    const nombre = document.getElementById("ue-nombre").value.trim();
+    const cargo = document.getElementById("ue-cargo").value.trim();
+    const entidad = document.getElementById("ue-entidad").value.trim();
+    const sector = document.getElementById("ue-sector").value.trim();
+    const correo = document.getElementById("ue-correo").value.trim();
+    const telefono = document.getElementById("ue-telefono").value.trim();
+
+    if (!nombre || !cargo || !entidad) {
+      alert("Nombre, cargo y unidad ejecutora son obligatorios.");
+      return;
+    }
+
+    const id = idNormalizado(`${cargo}-${entidad}`);
+    await setDoc(doc(db, "autoridades", id), {
+      nombre, cargo, entidad, sector: sector || null,
+      correo: correo || null, correo_faltante: !correo,
+      telefono: telefono || null,
+      tipo: "ue_bid",
+      fuente: "carga_manual",
+      estado: "publicado",
+      fecha_actualizacion: serverTimestamp(),
+    });
+
+    ["ue-nombre","ue-cargo","ue-entidad","ue-sector","ue-correo","ue-telefono"].forEach(id => {
+      document.getElementById(id).value = "";
+    });
+    cargarUnidadesEjecutoras();
+  });
+</script>
+
+</body>
+</html>

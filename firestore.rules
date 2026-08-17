@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Vista pública: cualquiera puede leer autoridades ya publicadas.
+    // Nadie puede escribir desde el cliente público (solo el panel admin
+    // autenticado, o el scraper vía cuenta de servicio con permisos de admin
+    // que ignora estas reglas).
+    match /autoridades/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Cola de revisión del scraper: solo usuarios autenticados
+    // (el equipo con acceso al panel admin) pueden leer y escribir.
+    match /cambios_pendientes/{docId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Catálogo de entidades a scrapear: mismo criterio.
+    match /entidades/{docId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
