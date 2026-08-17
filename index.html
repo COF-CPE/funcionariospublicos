@@ -216,27 +216,34 @@
 
 <div class="count" id="contador"></div>
 <div class="grid" id="grid"></div>
-<div class="empty-state" id="vacio" style="display:none;">No se encontraron resultados con ese filtro o búsqueda.</div>
+<div class="empty-state" id="vacio" style="display:none;">Aún no hay autoridades publicadas en el directorio. Aprueba registros desde el <a href="admin.html">panel de revisión</a>.</div>
 
-<footer>Datos de ejemplo — pendiente de conectar a Firestore</footer>
+<footer>Datos actualizados por el equipo CPE/PER — BID</footer>
 
-<script>
-// --- DATOS DE EJEMPLO ---
-// En producción esto se reemplaza por una lectura de Firestore:
-//   collection(db, "autoridades").where("estado","==","publicado")
-const autoridades = [
-  { nombre: "Eduardo Cuba", cargo: "Ministro de Economía y Finanzas", entidad: "Ministerio de Economía y Finanzas", tipo: "ministerio", sector: "Economía", correo: "ecuba@mef.gob.pe", telefono: "(01) 311-5930" },
-  { nombre: "Luis Enrique Chávez Basagoitia", cargo: "Viceministro de Relaciones Exteriores", entidad: "Ministerio de Relaciones Exteriores", tipo: "ministerio", sector: "Relaciones Exteriores", correo: null, telefono: null },
-  { nombre: "Julio Demartini", cargo: "Ministro de Salud", entidad: "Ministerio de Salud", tipo: "ministerio", sector: "Salud", correo: "ldyer@minsa.gob.pe", telefono: "(01) 315-6600" },
-  { nombre: "Jefe SUNAT", cargo: "Superintendente Nacional", entidad: "SUNAT", tipo: "regulador", sector: "Economía", correo: null, telefono: null },
-  { nombre: "Autoridad OSCE", cargo: "Presidente Ejecutivo", entidad: "OSCE", tipo: "regulador", sector: "Contrataciones Públicas", correo: null, telefono: null },
-  { nombre: "Jefatura ANA", cargo: "Jefe(a) de la Autoridad Nacional del Agua", entidad: "ANA", tipo: "regulador", sector: "Agua y Saneamiento", correo: null, telefono: null },
-  { nombre: "Coordinador(a) UE", cargo: "Coordinador General de Unidad Ejecutora", entidad: "PE-L1310 — Programa de Reforma Agua y Saneamiento", tipo: "ue_bid", sector: "Agua y Saneamiento", correo: "contacto.pel1310@vivienda.gob.pe", telefono: null },
-  { nombre: "Especialista Fiduciario", cargo: "Especialista en Adquisiciones", entidad: "Unidad Ejecutora — Infraestructura Vial", tipo: "ue_bid", sector: "Transporte", correo: null, telefono: null },
-];
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getFirestore, collection, query, where, getDocs
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+  import { firebaseConfig } from "./firebase-config.js";
 
-let filtroActivo = "todos";
-let textoBusqueda = "";
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let autoridades = [];
+  let filtroActivo = "todos";
+  let textoBusqueda = "";
+
+  async function cargarAutoridades() {
+    const grid = document.getElementById("grid");
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">Cargando directorio...</div>`;
+
+    const q = query(collection(db, "autoridades"), where("estado", "==", "publicado"));
+    const snap = await getDocs(q);
+    autoridades = snap.docs.map(d => d.data());
+
+    render();
+  }
 
 function iconoTipo(tipo){
   const nombres = { ministerio:"Ministerio", agencia:"Agencia", regulador:"Regulador", ue_bid:"Unidad Ejecutora BID" };
@@ -291,7 +298,7 @@ document.getElementById("buscador").addEventListener("input", (e) => {
   render();
 });
 
-render();
+cargarAutoridades();
 </script>
 
 </body>
