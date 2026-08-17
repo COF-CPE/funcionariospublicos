@@ -176,6 +176,61 @@
   .falta-correo{
     color:#b5860a;
   }
+  .card-acciones{
+    display:none;
+    gap:8px;
+    margin-top:10px;
+    padding-top:9px;
+    border-top:1px dashed var(--gris-claro);
+  }
+  .card.editable .card-acciones{ display:flex; }
+  .card-acciones button{
+    font-family:var(--mono);
+    font-size:11px;
+    padding:5px 10px;
+    border-radius:5px;
+    cursor:pointer;
+    border:1px solid var(--gris-claro);
+    background:var(--fondo);
+    color:var(--gris);
+  }
+  .card-acciones .btn-editar-tarjeta:hover{ border-color:var(--tinta); color:var(--tinta); }
+  .card-acciones .btn-eliminar-tarjeta:hover{ border-color:var(--rojo-oscuro); color:var(--rojo-oscuro); }
+  .btn-agregar-ue{
+    font-family:var(--mono);
+    font-size:12px;
+    padding:9px 16px;
+    border-radius:20px;
+    border:1.5px solid var(--tinta);
+    background:var(--tinta);
+    color:#fff;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  #modal-overlay{
+    position:fixed; inset:0; background:rgba(28,28,30,0.55); z-index:998;
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  #modal-overlay.abierto{ display:flex; }
+  #modal-box{
+    background:var(--panel); border-radius:12px; padding:24px 26px;
+    width:100%; max-width:420px; max-height:90vh; overflow-y:auto;
+  }
+  #modal-box h3{ margin:0 0 14px; font-size:16px; }
+  #modal-box input, #modal-box select{
+    width:100%; padding:9px 11px; margin-bottom:10px;
+    border:1.5px solid var(--gris-claro); border-radius:6px; font-size:13px;
+    font-family:var(--sans); box-sizing:border-box;
+  }
+  #modal-box .modal-acciones{ display:flex; gap:8px; margin-top:6px; }
+  #modal-box .btn-guardar-modal{
+    flex:1; background:var(--tinta); color:#fff; border:none;
+    padding:10px; border-radius:6px; font-weight:600; cursor:pointer;
+  }
+  #modal-box .btn-cancelar-modal{
+    background:transparent; color:var(--gris); border:1px solid var(--gris-claro);
+    padding:10px 14px; border-radius:6px; cursor:pointer;
+  }
   .empty-state{
     max-width:1080px;
     margin:40px auto;
@@ -216,6 +271,7 @@
 <div class="toolbar">
   <div class="search-row">
     <input type="text" id="buscador" placeholder="Buscar por nombre, cargo o entidad...">
+    <button class="btn-agregar-ue" id="btn-abrir-agregar">+ Agregar a Unidades Ejecutoras BID</button>
   </div>
   <div class="chip-group" id="filtro-tipo">
     <div class="chip active" data-tipo="todos">Todos</div>
@@ -234,10 +290,35 @@
 
 </div><!-- /contenido-protegido -->
 
+<div id="modal-overlay">
+  <div id="modal-box">
+    <h3 id="modal-titulo">Agregar a Unidades Ejecutoras BID</h3>
+    <input type="text" id="modal-nombre" placeholder="Nombre del contacto">
+    <select id="modal-cargo">
+      <option value="">Selecciona un rol...</option>
+      <option value="Coordinador General">Coordinador General</option>
+      <option value="Especialista en Adquisiciones">Especialista en Adquisiciones</option>
+      <option value="Especialista Financiero">Especialista Financiero</option>
+      <option value="Especialista en Seguimiento y Monitoreo">Especialista en Seguimiento y Monitoreo</option>
+      <option value="__otro__">Otro (escribir abajo)</option>
+    </select>
+    <input type="text" id="modal-cargo-otro" placeholder="Escribe el rol si elegiste 'Otro'" style="display:none;">
+    <select id="modal-entidad">
+      <option value="">Cargando proyectos...</option>
+    </select>
+    <input type="email" id="modal-correo" placeholder="Correo">
+    <input type="text" id="modal-telefono" placeholder="Teléfono (opcional)">
+    <div class="modal-acciones">
+      <button class="btn-guardar-modal" id="btn-guardar-modal">Guardar</button>
+      <button class="btn-cancelar-modal" id="btn-cancelar-modal">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // Clave compartida del equipo. Para cambiarla, edita este valor y
   // sube el archivo de nuevo — no hay forma de cambiarla desde la web.
-  const CLAVE_ACCESO = "peru";
+  const CLAVE_ACCESO = "BID-Peru2026";
 
   function intentarIngresar() {
     const valor = document.getElementById("gate-password").value;
@@ -265,7 +346,8 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
   import {
-    getFirestore, collection, query, where, getDocs
+    getFirestore, collection, query, where, getDocs, doc, setDoc,
+    deleteDoc, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
   import { firebaseConfig } from "./firebase-config.js";
 
@@ -282,7 +364,7 @@
 
     const q = query(collection(db, "autoridades"), where("estado", "==", "publicado"));
     const snap = await getDocs(q);
-    autoridades = snap.docs.map(d => d.data());
+    autoridades = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
     render();
   }
@@ -311,7 +393,7 @@ function render(){
 
   filtrados.forEach(a => {
     const card = document.createElement("div");
-    card.className = "card";
+    card.className = "card" + (a.tipo === "ue_bid" ? " editable" : "");
     card.innerHTML = `
       <span class="tipo-tag tipo-${a.tipo}">${iconoTipo(a.tipo)}</span>
       <h3>${a.nombre}</h3>
@@ -321,7 +403,15 @@ function render(){
         ${a.correo ? `<span><a href="mailto:${a.correo}">${a.correo}</a></span>` : `<span class="falta-correo">Correo no disponible</span>`}
         ${a.telefono ? `<span>${a.telefono}</span>` : ""}
       </div>
+      <div class="card-acciones">
+        <button class="btn-editar-tarjeta">Editar</button>
+        <button class="btn-eliminar-tarjeta">Eliminar</button>
+      </div>
     `;
+    if (a.tipo === "ue_bid") {
+      card.querySelector(".btn-editar-tarjeta").addEventListener("click", () => abrirModal(a));
+      card.querySelector(".btn-eliminar-tarjeta").addEventListener("click", () => eliminarAutoridad(a));
+    }
     grid.appendChild(card);
   });
 }
@@ -339,6 +429,113 @@ document.getElementById("buscador").addEventListener("input", (e) => {
   textoBusqueda = e.target.value;
   render();
 });
+
+// --- MODAL: agregar/editar Unidades Ejecutoras BID directo, sin panel admin ---
+let idEnEdicion = null;
+let proyectosCargados = false;
+
+async function cargarProyectosEnModal() {
+  if (proyectosCargados) return;
+  const select = document.getElementById("modal-entidad");
+  const snap = await getDocs(collection(db, "proyectos_bid"));
+  if (snap.empty) {
+    select.innerHTML = `<option value="">Sin proyectos cargados</option>`;
+    return;
+  }
+  const opciones = [];
+  snap.forEach(d => {
+    const p = d.data();
+    opciones.push(`${p.proyecto} — ${p.nombre}`);
+  });
+  opciones.sort();
+  select.innerHTML = `<option value="">Selecciona un proyecto...</option>` +
+    opciones.map(o => `<option value="${o}">${o}</option>`).join("");
+  proyectosCargados = true;
+}
+
+function idNormalizado(str) {
+  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 200);
+}
+
+async function abrirModal(autoridad) {
+  await cargarProyectosEnModal();
+
+  idEnEdicion = autoridad ? autoridad.id : null;
+  document.getElementById("modal-titulo").textContent = autoridad
+    ? `Editando a ${autoridad.nombre}` : "Agregar a Unidades Ejecutoras BID";
+  document.getElementById("modal-nombre").value = autoridad?.nombre || "";
+  document.getElementById("modal-correo").value = autoridad?.correo || "";
+  document.getElementById("modal-telefono").value = autoridad?.telefono || "";
+
+  const rolesFijos = ["Coordinador General", "Especialista en Adquisiciones", "Especialista Financiero", "Especialista en Seguimiento y Monitoreo"];
+  const selectCargo = document.getElementById("modal-cargo");
+  const cargoOtro = document.getElementById("modal-cargo-otro");
+  if (autoridad && !rolesFijos.includes(autoridad.cargo)) {
+    selectCargo.value = "__otro__";
+    cargoOtro.style.display = "block";
+    cargoOtro.value = autoridad.cargo || "";
+  } else {
+    selectCargo.value = autoridad?.cargo || "";
+    cargoOtro.style.display = "none";
+    cargoOtro.value = "";
+  }
+
+  document.getElementById("modal-entidad").value = autoridad?.entidad || "";
+  document.getElementById("modal-overlay").classList.add("abierto");
+}
+
+function cerrarModal() {
+  document.getElementById("modal-overlay").classList.remove("abierto");
+  idEnEdicion = null;
+}
+
+document.getElementById("btn-abrir-agregar").addEventListener("click", () => abrirModal(null));
+document.getElementById("btn-cancelar-modal").addEventListener("click", cerrarModal);
+document.getElementById("modal-overlay").addEventListener("click", (e) => {
+  if (e.target.id === "modal-overlay") cerrarModal();
+});
+
+document.getElementById("modal-cargo").addEventListener("change", (e) => {
+  document.getElementById("modal-cargo-otro").style.display = e.target.value === "__otro__" ? "block" : "none";
+});
+
+document.getElementById("btn-guardar-modal").addEventListener("click", async () => {
+  const nombre = document.getElementById("modal-nombre").value.trim();
+  const cargoSelect = document.getElementById("modal-cargo").value;
+  const cargo = cargoSelect === "__otro__"
+    ? document.getElementById("modal-cargo-otro").value.trim()
+    : cargoSelect;
+  const entidad = document.getElementById("modal-entidad").value.trim();
+  const correo = document.getElementById("modal-correo").value.trim();
+  const telefono = document.getElementById("modal-telefono").value.trim();
+
+  if (!nombre || !cargo || !entidad) {
+    alert("Nombre, rol y proyecto son obligatorios.");
+    return;
+  }
+
+  const id = idEnEdicion || idNormalizado(`${cargo}-${entidad}-${nombre}`);
+  await setDoc(doc(db, "autoridades", id), {
+    nombre, cargo, entidad,
+    correo: correo || null,
+    correo_faltante: !correo,
+    telefono: telefono || null,
+    tipo: "ue_bid",
+    fuente: "carga_manual",
+    estado: "publicado",
+    fecha_actualizacion: serverTimestamp(),
+  });
+
+  cerrarModal();
+  cargarAutoridades();
+});
+
+async function eliminarAutoridad(a) {
+  if (!confirm(`¿Eliminar a ${a.nombre}?`)) return;
+  await deleteDoc(doc(db, "autoridades", a.id));
+  cargarAutoridades();
+}
 
 cargarAutoridades();
 </script>
