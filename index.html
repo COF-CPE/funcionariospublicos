@@ -195,6 +195,18 @@
 </head>
 <body>
 
+<div id="gate-overlay" style="position:fixed; inset:0; background:#1c1c1e; z-index:999; display:flex; align-items:center; justify-content:center; font-family:'Inter',-apple-system,sans-serif;">
+  <div style="background:#fff; border-radius:12px; padding:32px 30px; width:100%; max-width:340px; text-align:center;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#C8102E; margin-bottom:8px;">BID · Oficina Perú</div>
+    <h2 style="margin:0 0 16px; font-size:16px; color:#1c1c1e;">Acceso al directorio</h2>
+    <input type="password" id="gate-password" placeholder="Clave de acceso" style="width:100%; padding:10px 12px; border:1.5px solid #e8e7e4; border-radius:7px; font-size:14px; margin-bottom:10px; box-sizing:border-box;">
+    <button id="gate-submit" style="width:100%; padding:11px; background:#1c1c1e; color:#fff; border:none; border-radius:7px; font-weight:600; cursor:pointer;">Ingresar</button>
+    <div id="gate-error" style="display:none; color:#C8102E; font-size:12.5px; margin-top:8px;">Clave incorrecta.</div>
+  </div>
+</div>
+
+<div id="contenido-protegido" style="display:none;">
+
 <header>
   <div class="eyebrow">BID · Oficina Perú</div>
   <h1>Directorio de Autoridades</h1>
@@ -219,6 +231,36 @@
 <div class="empty-state" id="vacio" style="display:none;">Aún no hay autoridades publicadas en el directorio. Aprueba registros desde el <a href="admin.html">panel de revisión</a>.</div>
 
 <footer>Datos actualizados por el equipo CPE/PER — BID</footer>
+
+</div><!-- /contenido-protegido -->
+
+<script>
+  // Clave compartida del equipo. Para cambiarla, edita este valor y
+  // sube el archivo de nuevo — no hay forma de cambiarla desde la web.
+  const CLAVE_ACCESO = "BID-Peru2026";
+
+  function intentarIngresar() {
+    const valor = document.getElementById("gate-password").value;
+    if (valor === CLAVE_ACCESO) {
+      sessionStorage.setItem("directorio_autenticado", "1");
+      document.getElementById("gate-overlay").style.display = "none";
+      document.getElementById("contenido-protegido").style.display = "block";
+    } else {
+      document.getElementById("gate-error").style.display = "block";
+    }
+  }
+
+  document.getElementById("gate-submit").addEventListener("click", intentarIngresar);
+  document.getElementById("gate-password").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") intentarIngresar();
+  });
+
+  // Si ya ingresó la clave en esta pestaña/sesión, no se la vuelve a pedir.
+  if (sessionStorage.getItem("directorio_autenticado") === "1") {
+    document.getElementById("gate-overlay").style.display = "none";
+    document.getElementById("contenido-protegido").style.display = "block";
+  }
+</script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
