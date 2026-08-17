@@ -102,7 +102,9 @@ async function scrapeMinistros() {
 
     if (!correo) {
       const textoCompleto = await card.textContent();
-      const match = textoCompleto && textoCompleto.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+      // Solo minúsculas: los correos de gob.pe son siempre en minúsculas,
+      // y así se corta antes de arrastrar texto pegado como "...gob.peVer".
+      const match = textoCompleto && textoCompleto.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/);
       correo = match ? match[0] : null;
     }
 
@@ -110,13 +112,15 @@ async function scrapeMinistros() {
       resultados.push({
         nombre: nombre.trim(),
         cargo: cargo ? cargo.trim() : null,
+        entidad: derivarEntidad(cargo),
+        tipo: 'ministerio',
         telefono: telefono ? telefono.trim() : null,
         correo: correo,
         correo_faltante: !correo, // flag para que el panel de revisión lo resalte
         entidad_url: entidadUrl || null,
         fuente: URL_MINISTROS,
         fecha_scrape: new Date().toISOString(),
-        estado: 'pendiente_revision',
+        estado: 'publicado',
       });
     }
   }
@@ -132,6 +136,19 @@ async function scrapeMinistros() {
   console.log(`Listo: ${resultados.length} registros guardados en ${OUTPUT_FILE}`);
 
   await browser.close();
+}
+
+function derivarEntidad(cargo) {
+  if (!cargo) return null;
+  const texto = cargo.trim();
+  if (/^Presidente del Consejo de Ministros/i.test(texto)) {
+    return 'Presidencia del Consejo de Ministros';
+  }
+  const match = texto.match(/^Ministr[oa] (de|del) (.+)$/i);
+  if (match) {
+    return `Ministerio ${match[1]} ${match[2]}`;
+  }
+  return texto; // fallback: usa el cargo tal cual si no calza el patrón
 }
 
 async function safeText(handle, selector) {

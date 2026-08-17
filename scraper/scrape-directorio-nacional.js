@@ -91,7 +91,7 @@ async function scrapeDirectorioNacional() {
       correo = correo ? correo.replace(/^mailto:/i, '').trim() : null;
       if (!correo) {
         const texto = await card.textContent();
-        const match = texto && texto.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+        const match = texto && texto.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/);
         correo = match ? match[0] : null;
       }
 
