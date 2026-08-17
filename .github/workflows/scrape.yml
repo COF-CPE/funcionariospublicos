@@ -2,9 +2,8 @@ name: Scraper semanal de autoridades
 
 on:
   schedule:
-    # Todos los lunes 8:00 UTC (3:00 am hora Perú)
     - cron: '0 8 * * 1'
-  workflow_dispatch: {} # permite correrlo manualmente desde GitHub también
+  workflow_dispatch: {}
 
 jobs:
   scrape:
@@ -28,21 +27,20 @@ jobs:
       - name: Scrapear directorio nacional (todas las entidades)
         run: node scrape-directorio-nacional.js 50
 
-      - name: Publicar ministros (automático)
+      - name: Publicar ministros (automatico)
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: node upload-to-firestore.js ./output/ministros.json
 
-      - name: Publicar directorio nacional (automático)
+      - name: Publicar directorio nacional (automatico)
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: node upload-to-firestore.js ./output/directorio-nacional.json
 
-      - name: Guardar debug HTML si el scraper falló en encontrar tarjetas
+      - name: Guardar debug HTML si el scraper fallo en encontrar tarjetas
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: scrape-debug
           path: scraper/output/
           retention-days: 7
-Agregar workflow del scraper
