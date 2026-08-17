@@ -81,7 +81,7 @@ async function main() {
   // AJUSTAR según lo que muestre mef-directorio-columnas.json en la
   // primera corrida real.
   const colUnidadEjecutora = encontrarColumna(headers, ['unidad ejecutora', 'unidad_ejecutora', 'ue']);
-  const colNombreContacto = encontrarColumna(headers, ['coordinador', 'responsable', 'nombre', 'titular', 'jefe']);
+  const colNombreContacto = encontrarColumna(headers, ['sectorista', 'coordinador', 'responsable', 'nombre', 'titular', 'jefe']);
   const colCorreo = encontrarColumna(headers, ['correo', 'email']);
   const colTelefono = encontrarColumna(headers, ['telefono', 'teléfono', 'celular']);
 
@@ -116,7 +116,7 @@ async function main() {
 
     resultados.push({
       nombre: nombreContacto,
-      cargo: 'Contacto de Unidad Ejecutora (fuente: MEF)',
+      cargo: 'Contacto MEF (Sectorista) — no es el equipo de la Unidad Ejecutora',
       entidad: `${proyectoCoincidente.proyecto} — ${proyectoCoincidente.nombre}`,
       tipo: 'ue_bid',
       correo: colCorreo ? (fila[colCorreo] || null) : null,
