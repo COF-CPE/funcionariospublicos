@@ -2,24 +2,23 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Vista pública: cualquiera puede leer autoridades ya publicadas.
-    // Nadie puede escribir desde el cliente público (solo el panel admin
-    // autenticado, o el scraper vía cuenta de servicio con permisos de admin
-    // que ignora estas reglas).
+    // Sin autenticación: cualquiera puede leer y escribir. El scraper
+    // (vía cuenta de servicio) y el panel admin.html escriben por igual.
+    // Ver la nota de riesgo junto a este cambio en la conversación con Claude:
+    // esto expone el directorio completo a edición por cualquiera con
+    // acceso a internet, no solo a quien tenga el link del panel.
     match /autoridades/{docId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if true;
     }
 
-    // Cola de revisión del scraper: solo usuarios autenticados
-    // (el equipo con acceso al panel admin) pueden leer y escribir.
     match /cambios_pendientes/{docId} {
-      allow read, write: if request.auth != null;
+      allow read, write: if true;
     }
 
-    // Catálogo de entidades a scrapear: mismo criterio.
     match /entidades/{docId} {
-      allow read, write: if request.auth != null;
+      allow read, write: if true;
     }
   }
 }
+

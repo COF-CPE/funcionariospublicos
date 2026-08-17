@@ -66,18 +66,9 @@
     <div class="eyebrow">BID · Oficina Perú</div>
     <h1>Panel de Revisión — Directorio de Autoridades</h1>
   </div>
-  <button id="btn-logout" style="display:none;">Cerrar sesión</button>
 </header>
 
-<div id="login-screen">
-  <h2>Acceso restringido</h2>
-  <input type="email" id="login-email" placeholder="Correo">
-  <input type="password" id="login-pass" placeholder="Contraseña">
-  <button id="btn-login">Ingresar</button>
-  <div id="login-error">Correo o contraseña incorrectos.</div>
-</div>
-
-<main id="main">
+<main id="main" style="display:block;">
   <div class="tabs">
     <div class="tab active" data-panel="pendientes">Cambios pendientes</div>
     <div class="tab" data-panel="ue">Unidades Ejecutoras BID</div>
@@ -107,40 +98,16 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
   import {
-    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
-  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import {
     getFirestore, collection, query, where, getDocs, doc, setDoc,
     updateDoc, deleteDoc, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
   import { firebaseConfig } from "./firebase-config.js";
 
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // --- LOGIN ---
-  document.getElementById("btn-login").addEventListener("click", async () => {
-    const email = document.getElementById("login-email").value;
-    const pass = document.getElementById("login-pass").value;
-    try {
-      await signInWithEmailAndPassword(auth, email, pass);
-    } catch (e) {
-      document.getElementById("login-error").style.display = "block";
-    }
-  });
-
-  document.getElementById("btn-logout").addEventListener("click", () => signOut(auth));
-
-  onAuthStateChanged(auth, (user) => {
-    document.getElementById("login-screen").style.display = user ? "none" : "block";
-    document.getElementById("main").style.display = user ? "block" : "none";
-    document.getElementById("btn-logout").style.display = user ? "block" : "none";
-    if (user) {
-      cargarPendientes();
-      cargarUnidadesEjecutoras();
-    }
-  });
+  cargarPendientes();
+  cargarUnidadesEjecutoras();
 
   // --- TABS ---
   document.querySelectorAll(".tab").forEach(tab => {
