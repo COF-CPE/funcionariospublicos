@@ -80,10 +80,18 @@
 
   <div class="panel" id="panel-ue">
     <div id="form-ue">
-      <h3>Agregar / actualizar unidad ejecutora</h3>
+      <h3 id="form-ue-titulo">Agregar unidad ejecutora</h3>
       <div class="grid-form">
         <input type="text" id="ue-nombre" placeholder="Nombre del contacto">
-        <input type="text" id="ue-cargo" placeholder="Cargo (ej. Especialista en Adquisiciones)">
+        <select id="ue-cargo">
+          <option value="">Selecciona un rol...</option>
+          <option value="Coordinador General">Coordinador General</option>
+          <option value="Especialista en Adquisiciones">Especialista en Adquisiciones</option>
+          <option value="Especialista Financiero">Especialista Financiero</option>
+          <option value="Especialista en Seguimiento y Monitoreo">Especialista en Seguimiento y Monitoreo</option>
+          <option value="__otro__">Otro (escribir abajo)</option>
+        </select>
+        <input type="text" id="ue-cargo-otro" placeholder="Escribe el rol si elegiste 'Otro'" style="display:none;">
         <select id="ue-entidad">
           <option value="">Cargando proyectos...</option>
         </select>
@@ -92,6 +100,7 @@
         <input type="text" id="ue-telefono" placeholder="Teléfono (opcional)">
       </div>
       <button id="btn-guardar-ue">Guardar en el directorio</button>
+      <button id="btn-cancelar-ue" style="display:none; background:transparent; color:var(--gris); border:1px solid var(--gris-claro); margin-left:8px;">Cancelar edición</button>
     </div>
     <div class="lista-ue" id="lista-ue"><div class="vacio-msg">Cargando unidades ejecutoras...</div></div>
   </div>
@@ -226,30 +235,87 @@
       item.className = "ue-item";
       item.innerHTML = `
         <span><strong>${d.nombre}</strong> — ${d.cargo} · ${d.entidad}</span>
-        <button class="btn-eliminar">Eliminar</button>
+        <span>
+          <button class="btn-editar" style="margin-right:8px;">Editar</button>
+          <button class="btn-eliminar">Eliminar</button>
+        </span>
       `;
       item.querySelector(".btn-eliminar").addEventListener("click", async () => {
+        if (!confirm(`¿Eliminar a ${d.nombre}?`)) return;
         await deleteDoc(docSnap.ref);
         item.remove();
+      });
+      item.querySelector(".btn-editar").addEventListener("click", () => {
+        entrarModoEdicion(docSnap.id, d);
       });
       cont.appendChild(item);
     });
   }
 
+  let idEnEdicion = null;
+
+  function entrarModoEdicion(id, d) {
+    idEnEdicion = id;
+    document.getElementById("form-ue-titulo").textContent = `Editando a ${d.nombre}`;
+    document.getElementById("ue-nombre").value = d.nombre || "";
+
+    const rolesFijos = ["Coordinador General", "Especialista en Adquisiciones", "Especialista Financiero", "Especialista en Seguimiento y Monitoreo"];
+    if (rolesFijos.includes(d.cargo)) {
+      document.getElementById("ue-cargo").value = d.cargo;
+      document.getElementById("ue-cargo-otro").style.display = "none";
+    } else {
+      document.getElementById("ue-cargo").value = "__otro__";
+      document.getElementById("ue-cargo-otro").style.display = "block";
+      document.getElementById("ue-cargo-otro").value = d.cargo || "";
+    }
+
+    document.getElementById("ue-entidad").value = d.entidad || "";
+    document.getElementById("ue-sector").value = d.sector || "";
+    document.getElementById("ue-correo").value = d.correo || "";
+    document.getElementById("ue-telefono").value = d.telefono || "";
+    document.getElementById("btn-guardar-ue").textContent = "Guardar cambios";
+    document.getElementById("btn-cancelar-ue").style.display = "inline-block";
+    document.getElementById("form-ue").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function salirModoEdicion() {
+    idEnEdicion = null;
+    document.getElementById("form-ue-titulo").textContent = "Agregar unidad ejecutora";
+    document.getElementById("btn-guardar-ue").textContent = "Guardar en el directorio";
+    document.getElementById("btn-cancelar-ue").style.display = "none";
+    ["ue-nombre","ue-sector","ue-correo","ue-telefono","ue-cargo-otro"].forEach(id => {
+      document.getElementById(id).value = "";
+    });
+    document.getElementById("ue-cargo-otro").style.display = "none";
+    document.getElementById("ue-cargo").selectedIndex = 0;
+    document.getElementById("ue-entidad").selectedIndex = 0;
+  }
+
+  document.getElementById("ue-cargo").addEventListener("change", (e) => {
+    document.getElementById("ue-cargo-otro").style.display = e.target.value === "__otro__" ? "block" : "none";
+  });
+
+  document.getElementById("btn-cancelar-ue").addEventListener("click", salirModoEdicion);
+
   document.getElementById("btn-guardar-ue").addEventListener("click", async () => {
     const nombre = document.getElementById("ue-nombre").value.trim();
-    const cargo = document.getElementById("ue-cargo").value.trim();
+    const cargoSelect = document.getElementById("ue-cargo").value;
+    const cargo = cargoSelect === "__otro__"
+      ? document.getElementById("ue-cargo-otro").value.trim()
+      : cargoSelect;
     const entidad = document.getElementById("ue-entidad").value.trim();
     const sector = document.getElementById("ue-sector").value.trim();
     const correo = document.getElementById("ue-correo").value.trim();
     const telefono = document.getElementById("ue-telefono").value.trim();
 
     if (!nombre || !cargo || !entidad) {
-      alert("Nombre, cargo y unidad ejecutora son obligatorios.");
+      alert("Nombre, rol y proyecto son obligatorios.");
       return;
     }
 
-    const id = idNormalizado(`${cargo}-${entidad}`);
+    // El ID incluye el nombre para no pisar a otra persona con el mismo
+    // rol en el mismo proyecto (ej. dos Especialistas de Adquisiciones).
+    const id = idEnEdicion || idNormalizado(`${cargo}-${entidad}-${nombre}`);
     await setDoc(doc(db, "autoridades", id), {
       nombre, cargo, entidad, sector: sector || null,
       correo: correo || null, correo_faltante: !correo,
@@ -260,10 +326,7 @@
       fecha_actualizacion: serverTimestamp(),
     });
 
-    ["ue-nombre","ue-cargo","ue-sector","ue-correo","ue-telefono"].forEach(id => {
-      document.getElementById(id).value = "";
-    });
-    document.getElementById("ue-entidad").selectedIndex = 0;
+    salirModoEdicion();
     cargarUnidadesEjecutoras();
   });
 </script>
